@@ -27,8 +27,9 @@ const PostCard = props => {
         const fetchQuestionInfo = async () => {
             if (!collapse) {
                 const res = await axios.get(
-                    `https://api.stackexchange.com/2.2/questions/${props.question_id}/comments?order=desc&sort=votes&site=stackoverflow&filter=!--1nZy2NR-_*`
+                    `https://api.stackexchange.com/2.2/questions/${props.question_id}/comments?order=desc&sort=votes&site=stackoverflow&filter=!b6AubjWaofWWu9`
                 );
+                console.log(res);
                 res.data.items.sort((a, b) =>
                     a.creation_date <= b.creation_date ? 1 : -1
                 );
