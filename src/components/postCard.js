@@ -63,6 +63,11 @@ const PostCard = props => {
                                   <Typography variant="subtitle1">
                                       {decodeHTML(comment.body)}
                                   </Typography>
+                                  <Typography
+                                      variant="caption"
+                                      className={
+                                          classes.date
+                                      }>{`votes: ${props.votes}`}</Typography>
                               </CardContent>
                           );
                       })
