@@ -117,6 +117,7 @@ const App = () => {
                           return (
                               <PostCard
                                   key={i}
+                                  question_id={item.question_id}
                                   title={item.title}
                                   creation_date={item.creation_date}
                                   votes={item.score}></PostCard>
