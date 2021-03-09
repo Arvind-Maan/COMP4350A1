@@ -19,10 +19,11 @@ docker pull arvindmaan/comp4350a1:latest
 Then run the docker container
 
 ```
-docker run arvindmaan/comp4350a1:latest
+docker run -p 3000:3000 arvindmaan/comp4350a1:latest
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser, by default.
+
 If you changed the port this will be different.
 
 ## Locally Running
