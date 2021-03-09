@@ -1,13 +1,37 @@
 # COMP4350 Assignment 1
 
-> Arvind Maan 7832526
+> Arvind Maan
+
+Assignment 1 for the COMP 4350 Software Engineering class.
+
+This project displays information gathered from the [Stackoverflow API](https://api.stackexchange.com/docs)
+
+# Running the Project
+
+## Docker Hub
+
+Pull the latest docker container
+
+```
+docker pull arvindmaan/comp4350a1:latest
+```
+
+Then run the docker container
+
+```
+docker run arvindmaan/comp4350a1:latest
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser, by default.
+If you changed the port this will be different.
+
+## Locally Running
 
 In the project directory, you can run:
 
-### `npm start`
+```
+npm install
+npm start
+```
 
-Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
