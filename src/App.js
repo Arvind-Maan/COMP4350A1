@@ -3,6 +3,7 @@ import { makeStyles, TextField, Button } from '@material-ui/core';
 import useForm from './hooks/useForm';
 import PostCard from './components/postCard';
 import axios from 'axios';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,19 +46,7 @@ const App = () => {
     const [form, onFormChange] = useForm({
         value: '',
     });
-    //constant requests:
-    //by creation date
-    const creationReq = value => {
-        return axios.get(
-            `https://api.stackexchange.com/2.2/questions?pagesize=10&order=desc&sort=creation&tagged=${value}&site=stackoverflow`
-        );
-    };
-    //by votes
-    const votesReq = value => {
-        return axios.get(
-            `https://api.stackexchange.com/2.2/questions?pagesize=10&order=desc&sort=votes&tagged=${value}&site=stackoverflow`
-        );
-    };
+
     const validateForm = () => {
         let errors = {};
         if (!form.value) {
@@ -68,6 +57,21 @@ const App = () => {
     };
 
     useEffect(() => {
+        const dateTo = moment().utc().startOf('day').unix(); //last midnight in UTC time
+        const dateFrom = moment().subtract(7, 'd').utc().startOf('day').unix();
+        //constant requests:
+        //by creation date
+        const creationReq = value => {
+            return axios.get(
+                `https://api.stackexchange.com/2.2/questions?fromdate=${dateFrom}&todate=${dateTo}&pagesize=10&order=desc&sort=creation&tagged=${value}&site=stackoverflow`
+            );
+        };
+        //by votes
+        const votesReq = value => {
+            return axios.get(
+                `https://api.stackexchange.com/2.2/questions?fromdate=${dateFrom}&todate=${dateTo}&pagesize=10&order=desc&sort=votes&tagged=${value}&site=stackoverflow`
+            );
+        };
         const getStackOverflowValues = () => {
             if (valid) {
                 let startTime = Date.now();
