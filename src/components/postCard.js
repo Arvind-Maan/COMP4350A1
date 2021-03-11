@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
 
@@ -59,7 +60,7 @@ const PostCard = props => {
                     {new Date(props.creation_date * 1000).toLocaleString()}
                 </Typography>
                 <Typography variant="h5">{decodeHTML(props.title)}</Typography>
-                <Typography>{!collapse ? qbody : null}</Typography>
+                <ReactMarkdown>{!collapse ? qbody : null}</ReactMarkdown>
                 <Typography
                     className={
                         classes.date
@@ -88,14 +89,14 @@ const PostCard = props => {
                                               comment.creation_date * 1000
                                           ).toLocaleString()}
                                       </Typography>
-                                      <Typography variant="subtitle1">
+                                      <ReactMarkdown>
                                           {decodeHTML(comment.body_markdown)}
-                                      </Typography>
+                                      </ReactMarkdown>
                                       <Typography
                                           variant="caption"
                                           className={
                                               classes.date
-                                          }>{`votes: ${props.votes}`}</Typography>
+                                          }>{`votes: ${comment.score}`}</Typography>
                                   </CardContent>
                                   {subcomments
                                       ? subcomments.map((subcomment, i) => {
@@ -111,16 +112,16 @@ const PostCard = props => {
                                                                     1000
                                                             ).toLocaleString()}
                                                         </Typography>
-                                                        <Typography variant="subtitle1">
+                                                        <ReactMarkdown>
                                                             {decodeHTML(
                                                                 subcomment.body_markdown
                                                             )}
-                                                        </Typography>
+                                                        </ReactMarkdown>
                                                         <Typography
                                                             variant="caption"
                                                             className={
                                                                 subcomment.date
-                                                            }>{`votes: ${subcomment.votes}`}</Typography>
+                                                            }>{`votes: ${subcomment.score}`}</Typography>
                                                     </CardContent>
                                                 </Card>
                                             );
