@@ -10,8 +10,12 @@ const useStyles = makeStyles({
     provider: {
         fontSize: 14,
     },
-    thread: {
-        'margin-left': '50px',
+    comments: {
+        'background-color': '#e6e5e7',
+        'margin-left': '75px',
+    },
+    answers: {
+        'margin-left': '25px',
     },
 });
 const decodeHTML = html => {
@@ -22,7 +26,9 @@ const decodeHTML = html => {
 const PostCard = props => {
     const classes = useStyles();
     const [collapse, setCollapse] = useState(true);
-    const [thread, setThread] = useState([]);
+    const [answers, setAnswers] = useState([]);
+    const [comments, setComments] = useState([]);
+
     const [qbody, setQbody] = useState('');
 
     const doCollapse = () => {
@@ -35,19 +41,19 @@ const PostCard = props => {
                 const res = await axios.get(
                     `https://api.stackexchange.com/2.2/questions/${props.question_id}?order=desc&sort=votes&site=stackoverflow&filter=!)rTkraPYPWw39)()ir25`
                 );
-                console.log(res);
-                let thread = [];
                 const question = res.data.items[0];
 
-                if (question.hasOwnProperty('answers'))
-                    thread = thread.concat(question.answers);
-                if (question.hasOwnProperty('comments'))
-                    thread = thread.concat(question.comments);
-                thread.sort((a, b) =>
-                    a.creation_date <= b.creation_date ? 1 : -1
-                );
+                if (question.answers)
+                    question.answers.sort((a, b) =>
+                        a.creation_date <= b.creation_date ? 1 : -1
+                    );
+                if (question.comments)
+                    question.comments.sort((a, b) =>
+                        a.creation_date <= b.creation_date ? 1 : -1
+                    );
                 setQbody(decodeHTML(question.body_markdown));
-                setThread(thread);
+                setAnswers(question.answers ? question.answers : []);
+                setComments(question.comments ? question.comments : []);
             }
         };
         fetchQuestionInfo();
@@ -69,7 +75,35 @@ const PostCard = props => {
 
             <Card>
                 {!collapse
-                    ? thread.map((comment, i) => {
+                    ? comments.map((comment, i) => {
+                          return (
+                              <Card
+                                  variant="outlined"
+                                  className={classes.comments}
+                                  key={i}>
+                                  <CardContent>
+                                      <Typography color="textSecondary">
+                                          {new Date(
+                                              comment.creation_date * 1000
+                                          ).toLocaleString()}
+                                      </Typography>
+                                      <ReactMarkdown>
+                                          {decodeHTML(comment.body_markdown)}
+                                      </ReactMarkdown>
+                                      <Typography
+                                          variant="caption"
+                                          className={
+                                              classes.date
+                                          }>{`votes: ${comment.score}`}</Typography>
+                                  </CardContent>
+                              </Card>
+                          );
+                      })
+                    : null}
+            </Card>
+            <Card>
+                {!collapse
+                    ? answers.map((comment, i) => {
                           let subcomments = null;
                           if (comment.hasOwnProperty('comments')) {
                               subcomments = comment.comments;
@@ -81,7 +115,7 @@ const PostCard = props => {
                           return (
                               <Card
                                   variant="outlined"
-                                  className={classes.thread}
+                                  className={classes.answers}
                                   key={i}>
                                   <CardContent>
                                       <Typography color="textSecondary">
@@ -103,7 +137,7 @@ const PostCard = props => {
                                             return (
                                                 <Card
                                                     variant="outlined"
-                                                    className={classes.thread}
+                                                    className={classes.comments}
                                                     key={i}>
                                                     <CardContent>
                                                         <Typography color="textSecondary">
