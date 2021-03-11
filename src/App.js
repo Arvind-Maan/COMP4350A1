@@ -57,7 +57,7 @@ const App = () => {
     };
 
     useEffect(() => {
-        const dateTo = moment().utc().startOf('day').unix(); //last midnight in UTC time
+        const dateTo = moment().add(1, 'd').utc().endOf('day').unix(); //last midnight in UTC time
         const dateFrom = moment().subtract(7, 'd').utc().startOf('day').unix();
         //constant requests:
         //by creation date
